@@ -1,0 +1,26 @@
+[project]
+name = "clone-google-drive"
+version = "0.1.0"
+description = "clone a google drive locally"
+authors = [
+    {name = "jbauthess",email = "authesse@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-api-python-client (>=2.166.0,<3.0.0)",
+    "google-auth-httplib2 (>=0.2.0,<0.3.0)",
+    "google-auth-oauthlib (>=1.2.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.5"
+pytest-cov = "^6.0.0"
+coverage = "^7.7.1"
+
