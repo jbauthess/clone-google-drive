@@ -7,13 +7,10 @@ from files.file_item import FileItem, FileItemWithTree
 FOLDER_MIMETYPE = "application/vnd.google-apps.folder"
 
 
-def list_items(service, folder_id) -> list[FileItem]:
-    """List items (files and folders) inside folder whose ID is 'folder_id'"""
-    query = f"'{folder_id}' in parents and trashed=false"
-
-    # get file ressource ID, name and type. For more info on possibility:
-    # https://developers.google.com/drive/api/reference/rest/v3/files?hl=fr#resource
+def list_files_using_drive_API(service, query: str) -> list[dict[str, str]]:
+    # https://googleapis.github.io/google-api-python-client/docs/start.html
     results = (
+        # Access the collection "files" using the API service and lists them
         service.files()
         .list(
             pageSize=None,
@@ -23,6 +20,16 @@ def list_items(service, folder_id) -> list[FileItem]:
         .execute()
     )
     items = results.get("files", [])
+    return items
+
+
+def list_items(service, folder_id) -> list[FileItem]:
+    """List items (files and folders) inside folder whose ID is 'folder_id'"""
+    query = f"'{folder_id}' in parents and trashed=false"
+
+    # get file ressource ID, name and type. For more info on possibility:
+    # https://developers.google.com/drive/api/reference/rest/v3/files?hl=fr#resource
+    items = list_files_using_drive_API(service, query)
 
     return [FileItem(**item) for item in items]
 

@@ -11,12 +11,12 @@ from files.list_item import list_items_recursive
 # info on the google drive API : https://developers.google.com/drive/api/quickstart/python?hl=fr
 
 
-def clone(export_folder_path: Path):
+def clone(export_folder_path: Path, user_access_info_folder_path: Path | None = None):
     """
     clone the content of a google drive locally replicating the folder tree. For file using specific google
     format as google doc, google spreadsheet and that can not be doanloaded as it, the files are exported to a compatible format (word, excel...)
     """
-    creds = connect()
+    creds = connect(user_access_info_folder_path)
 
     try:
         # Call the Drive v3 API
@@ -47,12 +47,20 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "export_folder_path",
-        help="apth of the local folder the google drive will be cloned into",
+        help="path of the local folder the google drive will be cloned into",
         type=Path,
+    )
+
+    parser.add_argument(
+        "-user_access_info_folder_path",
+        help="path of the local folder containing user authentication info",
+        type=Path,
+        dest="user_access_info_folder_path",
     )
 
     args = parser.parse_args()
     export_folder_path = args.export_folder_path
+    user_access_info_folder_path = args.user_access_info_folder_path
 
     # --- clone the drive
-    clone(export_folder_path)
+    clone(export_folder_path, user_access_info_folder_path)
